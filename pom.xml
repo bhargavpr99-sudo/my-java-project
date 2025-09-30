@@ -1,33 +1,29 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"   
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0   
-         http://maven.apache.org/maven-v4_0_0.xsd">  
-    <modelVersion>4.0.0</modelVersion>  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>com.example</groupId>  
-    <artifactId>my-java-project</artifactId>  
-    <version>1.0-SNAPSHOT</version>  
+    <modelVersion>4.0.0</modelVersion>
 
-    <build>  
-        <plugins>  
-            <plugin>  
-                <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-compiler-plugin</artifactId>  
-                <version>3.8.1</version>  
-                <configuration>  
-                    <source>17</source>  
-                    <target>17</target>  
-                </configuration>  
-            </plugin>  
+    <groupId>com.example</groupId>
+    <artifactId>my-java-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging> <!-- ✅ this makes Maven produce .war -->
 
-            <plugin>  
-                <groupId>org.codehaus.mojo</groupId>  
-                <artifactId>exec-maven-plugin</artifactId>  
-                <version>3.0.0</version>  
-                <configuration>  
-                    <mainClass>com.example.HelloServlet</mainClass>  
-                </configuration>  
-            </plugin>  
-        </plugins>  
-    </build>  
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
