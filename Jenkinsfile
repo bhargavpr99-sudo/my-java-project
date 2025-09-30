@@ -18,7 +18,7 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[
-                        url: 'https://github.com/YOUR-USERNAME/my-java-project.git',
+                        url: 'https://github.com/bhargavpr99-sudo/my-java-project.git',
                         credentialsId: '' // Add if repo is private
                     ]]
                 ])
