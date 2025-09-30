@@ -31,11 +31,18 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+
+        stage('Deploy to Tomcat') {
+            steps {
+                echo "Deploying WAR to Tomcat..."
+                sh 'cp target/*.war /opt/tomcat/webapps/'
+            }
+        }
     }
 
     post {
         success {
-            echo "Build and WAR packaging successful!"
+            echo "Build, WAR packaging, and deployment successful!"
             archiveArtifacts artifacts: 'target/*.war', fingerprint: true
         }
         failure {
