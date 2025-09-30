@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'      // Must match the name you set in Jenkins tool config
-        jdk 'JDK17'        // Must match your configured JDK name
+        maven 'Maven'      // Must match Jenkins tool config
+        jdk 'JDK17'        // Must match Jenkins tool config
     }
 
     environment {
@@ -19,32 +19,24 @@ pipeline {
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[
                         url: 'https://github.com/bhargavpr99-sudo/my-java-project.git',
-                        credentialsId: ''  // Leave blank if public repo
+                        credentialsId: ''
                     ]]
                 ])
             }
         }
 
-        stage('Build with Maven') {
+        stage('Build WAR with Maven') {
             steps {
-                echo "Building the project..."
+                echo "Building WAR package..."
                 sh 'mvn clean package'
-            }
-        }
-
-        stage('Run Application') {
-            steps {
-                echo "Running the Java application..."
-                sh 'mvn exec:java'
             }
         }
     }
 
     post {
         success {
-            echo "Build and execution successful!"
-            // Archive your build artifacts here
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            echo "Build and WAR packaging successful!"
+            archiveArtifacts artifacts: 'target/*.war', fingerprint: true
         }
         failure {
             echo "Build failed. Check logs for errors."
