@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'      // Must match the name you set in Jenkins tool config
-        jdk 'JDK17'        // Must match your configured JDK name
+        maven 'Maven'      // Must match Jenkins tool config
+        jdk 'JDK17'        // Must match Jenkins tool config
     }
 
     environment {
@@ -18,33 +18,31 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[
-                        url: 'https://github.com/bhargavpr99-sudo/my-java-project.git',
-                        credentialsId: ''  // Leave blank if public repo
+                        url: 'https://github.com/YOUR-USERNAME/my-java-project.git',
+                        credentialsId: '' // Add if repo is private
                     ]]
                 ])
             }
         }
 
-        stage('Build with Maven') {
+        stage('Build WAR with Maven') {
             steps {
                 echo "Building the project..."
                 sh 'mvn clean package'
             }
         }
 
-        stage('Run Application') {
+        stage('Archive WAR') {
             steps {
-                echo "Running the Java application..."
-                sh 'mvn exec:java'
+                echo "Archiving WAR file..."
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
     }
 
     post {
         success {
-            echo "Build and execution successful!"
-            // Archive your build artifacts here
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            echo "Build successful! WAR file ready for Tomcat deployment."
         }
         failure {
             echo "Build failed. Check logs for errors."
