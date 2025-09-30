@@ -2,51 +2,42 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'      // Must match Jenkins tool config
-        jdk 'JDK17'        // Must match Jenkins tool config
-    }
-
-    environment {
-        MAVEN_OPTS = "-Dmaven.test.failure.ignore=true"
+        maven 'Maven'   // must match Maven name in Jenkins Global Tool Config
+        jdk 'JDK17'     // must match JDK name in Jenkins Global Tool Config
     }
 
     stages {
         stage('Checkout') {
             steps {
-                echo "Cloning GitHub project"
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/master']],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/bhargavpr99-sudo/my-java-project.git',
-                        credentialsId: ''
-                    ]]
-                ])
+                echo 'Cloning GitHub project'
+                checkout scm
             }
         }
 
         stage('Build WAR with Maven') {
             steps {
-                echo "Building WAR package..."
+                echo 'Building WAR package...'
                 sh 'mvn clean package'
             }
         }
 
         stage('Deploy to Tomcat') {
             steps {
-                echo "Deploying WAR to Tomcat..."
-                sh 'cp target/*.war /opt/tomcat/webapps/'
+                echo 'Deploying WAR to Tomcat...'
+                sh '''
+                    cp target/my-java-project-1.0-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
+                    sudo systemctl restart tomcat
+                '''
             }
         }
     }
 
     post {
         success {
-            echo "Build, WAR packaging, and deployment successful!"
-            archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+            echo '✅ Build and Deploy successful!'
         }
         failure {
-            echo "Build failed. Check logs for errors."
+            echo '❌ Build failed. Check logs for errors.'
         }
     }
 }
