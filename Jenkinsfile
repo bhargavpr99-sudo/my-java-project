@@ -26,7 +26,8 @@ pipeline {
                 echo 'Deploying WAR to Tomcat...'
                 sh '''
                     cp target/my-java-project-1.0-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
-                    sudo systemctl restart tomcat
+                    /opt/tomcat/bin/shutdown.sh || true
+                    /opt/tomcat/bin/startup.sh
                 '''
             }
         }
