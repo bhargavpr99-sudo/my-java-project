@@ -25,9 +25,9 @@ pipeline {
             steps {
                 echo 'Deploying WAR to Tomcat...'
                 sh '''
-                    cp target/my-java-project-1.0-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
-                    /opt/tomcat/bin/shutdown.sh || true
-                    /opt/tomcat/bin/startup.sh
+                    sudo cp target/my-java-project-1.0-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
+                    sudo /opt/tomcat/bin/shutdown.sh || true
+                    sudo /opt/tomcat/bin/startup.sh
                 '''
             }
         }
